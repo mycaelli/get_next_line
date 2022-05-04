@@ -6,7 +6,7 @@
 /*   By: mcerquei <mcerquei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 19:23:33 by mcerquei          #+#    #+#             */
-/*   Updated: 2022/05/04 20:40:08 by mcerquei         ###   ########.fr       */
+/*   Updated: 2022/05/04 21:58:42 by mcerquei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,7 @@
 
 char	*get_next_line(int fd);
 char	*ft_strchr(const char *s, int c);
+size_t	ft_strlen(const char *s);
+char	*ft_strjoin(char const *s1, char const *s2);
 
 #endif
