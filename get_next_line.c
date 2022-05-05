@@ -6,13 +6,26 @@
 /*   By: mcerquei <mcerquei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 22:39:38 by mcerquei          #+#    #+#             */
-/*   Updated: 2022/05/05 18:45:21 by mcerquei         ###   ########.fr       */
+/*   Updated: 2022/05/05 20:39:39 by mcerquei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 #include <stdio.h>
+
+//free the lines that were already read
+/*void free_line(char *s, int j)
+{
+	int i;
+
+	i = 0;
+	while (i <= j)
+	{
+		free(&s[i]);
+		i++;
+	}
+}*/
 
 static char	*ft_strdup(const char *s)
 {
@@ -67,23 +80,23 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 char	*get_next_line(int fd)
 {
 	static char	*buff;
+	//char *str;
 	int j;
 
 	if (!buff)
-		buff = ft_calloc((BUFFER_SIZE + 2), sizeof(char));
+		buff = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
+	//str = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
+	if (!buff || fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
 	j = ft_newline(buff);
 	buff += j;
-	if (!buff || fd < 0 || BUFFER_SIZE <= 0)
+	while ((!ft_strchr(buff, '\n') || !EOF) && buff[BUFFER_SIZE] != 0)
 	{
-		//printf("aqui");
-		return (NULL);
-	}
-	while ((!ft_strchr(buff, '\n') || !EOF) && buff[BUFFER_SIZE] != 1)
-	{
-		buff[BUFFER_SIZE] = 1;
+		buff[BUFFER_SIZE] = 0;
 		read(fd, buff, BUFFER_SIZE);
+		j = ft_newline(buff);
+		//str = ft_substr(buff, 0, j);
+		return (ft_substr(buff, 0, j));
 	}
-	buff[BUFFER_SIZE + 1] = '\0';
-	j = ft_newline(buff);
-	return (ft_substr(buff, 0, j));
+	return (NULL);
 }
