@@ -6,7 +6,7 @@
 /*   By: mcerquei <mcerquei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 22:39:38 by mcerquei          #+#    #+#             */
-/*   Updated: 2022/05/05 20:39:39 by mcerquei         ###   ########.fr       */
+/*   Updated: 2022/05/06 22:57:50 by mcerquei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,13 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (sub);
 }
 
+void	*ft_memset(void *block, int c, size_t size)
+{
+	while (size--)
+		((unsigned char *) block)[size] = (unsigned char) c;
+	return (block);
+}
+
 
 char	*get_next_line(int fd)
 {
@@ -83,20 +90,48 @@ char	*get_next_line(int fd)
 	//char *str;
 	int j;
 
+	//buff = NULL;
 	if (!buff)
-		buff = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
-	//str = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
+	{
+		buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
+		buff = NULL;
+		//buff[BUFFER_SIZE] = 0;
+	}
+	//str = ft_calloc((BUFFER_SIZE + 1), sizeof(cline (get_next_line_utils.char));
 	if (!buff || fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	j = ft_newline(buff);
 	buff += j;
-	while ((!ft_strchr(buff, '\n') || !EOF) && buff[BUFFER_SIZE] != 0)
+	while ((!ft_strchr(buff, '\n') || !EOF))
 	{
-		buff[BUFFER_SIZE] = 0;
+		if (!buff)
+			return (NULL);
 		read(fd, buff, BUFFER_SIZE);
 		j = ft_newline(buff);
 		//str = ft_substr(buff, 0, j);
 		return (ft_substr(buff, 0, j));
 	}
 	return (NULL);
+/*
+	static char	*buff;
+	//char *str;
+	int j;
+
+	if (!buff)
+		buff = ft_calloc((BUFFER_SIZE), sizeof(char));
+	//str = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
+	if (!buff || fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	j = ft_newline(buff);
+	buff += j;
+	while ((!ft_strchr(buff, '\n') || !EOF))
+	{
+		read(fd, buff, BUFFER_SIZE);
+		j = ft_newline(buff);
+		//str = ft_calloc((j + 1), sizeof(char));
+		//str = ft_strncat(str, buff, j);
+		//str = ft_substr(buff, 0, j);
+		return (ft_substr(buff, 0, j));
+	}
+	return (NULL);*/
 }
