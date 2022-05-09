@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra -Werror -I. -c
+CFLAGS = -Wall -Wextra -Werror -g -I. -c
 
 CC = cc
 
@@ -15,7 +15,7 @@ run:	cmp
 		./a.out
 
 cmp:
-	$(CC) $(FLAGS) -D BUFFER_SIZE=100 $(SRC) get_next_line.h ./main.c
+	$(CC) $(FLAGS) -D BUFFER_SIZE=2 $(SRC) get_next_line.h ./main.c
 
 clean:
 	$(RM) $(SRC_OBJ)

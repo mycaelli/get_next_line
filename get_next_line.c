@@ -6,7 +6,7 @@
 /*   By: mcerquei <mcerquei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 22:39:38 by mcerquei          #+#    #+#             */
-/*   Updated: 2022/05/06 22:57:50 by mcerquei         ###   ########.fr       */
+/*   Updated: 2022/05/07 00:45:10 by mcerquei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,31 +87,38 @@ void	*ft_memset(void *block, int c, size_t size)
 char	*get_next_line(int fd)
 {
 	static char	*buff;
-	//char *str;
+	char *str;
 	int j;
 
 	//buff = NULL;
 	if (!buff)
 	{
-		buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
-		buff = NULL;
+                printf("entrou no !buff\n");
+		buff = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
+		//buff = NULL;
 		//buff[BUFFER_SIZE] = 0;
 	}
-	//str = ft_calloc((BUFFER_SIZE + 1), sizeof(cline (get_next_line_utils.char));
-	if (!buff || fd < 0 || BUFFER_SIZE <= 0)
+	str = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
+	if (!buff || !str || fd < 0 || BUFFER_SIZE <= 0)
+	{	
+		printf("aquuiiii");
 		return (NULL);
+	}
 	j = ft_newline(buff);
 	buff += j;
 	while ((!ft_strchr(buff, '\n') || !EOF))
 	{
-		if (!buff)
-			return (NULL);
+                printf("str antes read: %s\n", str);
+                printf("buff antes read: %s\n", buff);
 		read(fd, buff, BUFFER_SIZE);
 		j = ft_newline(buff);
+                str = ft_strncat(str, buff, j);
+                printf("str depois read: %s\n", str);
+                printf("buff depois read: %s\n", buff);
 		//str = ft_substr(buff, 0, j);
-		return (ft_substr(buff, 0, j));
 	}
-	return (NULL);
+        return (str);
+//	return (ft_substr(buff, 0, j));
 /*
 	static char	*buff;
 	//char *str;

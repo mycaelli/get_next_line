@@ -6,7 +6,7 @@
 /*   By: mcerquei <mcerquei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 19:23:33 by mcerquei          #+#    #+#             */
-/*   Updated: 2022/05/04 21:58:42 by mcerquei         ###   ########.fr       */
+/*   Updated: 2022/05/07 00:45:40 by mcerquei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@
 #include <fcntl.h>
 
 char	*get_next_line(int fd);
-char	*ft_strchr(const char *s, int c);
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
-
+void	*ft_calloc(size_t nmemb, size_t size);
+int	ft_newline(char *s);
+size_t	ft_strlcpy(char *dst, const char *src, size_t size);
+char	*ft_strncat(char *dest, char *src, unsigned int nb);
 #endif
