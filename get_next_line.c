@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcerquei <mcerquei@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 22:39:38 by mcerquei          #+#    #+#             */
-/*   Updated: 2022/05/07 00:45:10 by mcerquei         ###   ########.fr       */
+/*   Updated: 2022/05/10 02:07:49 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 #include <stdio.h>
+#include <string.h>
 
 //free the lines that were already read
 /*void free_line(char *s, int j)
@@ -27,118 +28,101 @@
 	}
 }*/
 
-static char	*ft_strdup(const char *s)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	char	*cpy;
-	int		i;
-	int		j;
+	size_t	i;
 
 	i = 0;
-	j = 0;
-	cpy = NULL;
-	while (s[i])
-		i++;
-	cpy = malloc(i + 1 * sizeof(char));
-	if (!cpy)
-		return (NULL);
-	while (j <= i)
+	while (i < n)
 	{
-		cpy[j] = s[j];
-		j++;
-	}
-	return (cpy);
-}
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	char			*sub;
-	unsigned int	i;
-	unsigned int	s_len;
-	unsigned int	sub_len;
-
-	s_len = ft_strlen(s);
-	i = 0;
-	sub = NULL;
-	if (start > s_len)
-		return (ft_strdup(""));
-	sub_len = ft_strlen(&s[start]);
-	if (len > sub_len)
-		len = sub_len;
-	sub = malloc((len + 1) * sizeof(char));
-	if (!sub)
-		return (NULL);
-	while (i < len && s[start + i])
-	{
-		sub[i] = s[start + i];
+		((char *) dest)[i] = ((const char *) src)[i];
 		i++;
 	}
-	sub[i] = '\0';
-	return (sub);
+	return (dest);
 }
 
-void	*ft_memset(void *block, int c, size_t size)
+void *ft_my_realloc(void *ptr, size_t original_l, size_t new_l)
 {
-	while (size--)
-		((unsigned char *) block)[size] = (unsigned char) c;
-	return (block);
-}
+	void *new_ptr;
 
+	if (new_l == 0)
+	{
+		printf("new_l == 0\n");
+		free(ptr);
+		return (NULL);
+	}
+	if (!ptr)
+	{
+		printf("!ptr\n");
+		return (malloc(new_l));
+	}
+	if (new_l <= original_l)
+	{
+		printf("new_l <= original\n");
+		return (ptr);
+	}
+	new_ptr = malloc(new_l);
+	//free(ptr);
+	if (new_ptr)
+	{
+		printf("new_ptr\n");
+		ft_strlcat(new_ptr, ptr, new_l);
+		//free(ptr);
+	}
+	return (new_ptr);
+}
 
 char	*get_next_line(int fd)
 {
 	static char	*buff;
-	char *str;
+	char *aux;
+	char *line;
 	int j;
-
-	//buff = NULL;
+	
+	j = 0;
 	if (!buff)
+		buff = malloc((BUFFER_SIZE) * sizeof(char));
+	//buff[BUFFER_SIZE] = '\0';
+
+	int i = 0;
+	while ((!(ft_strchr(buff, '\n'))) || !EOF )
 	{
-                printf("entrou no !buff\n");
-		buff = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
-		//buff = NULL;
-		//buff[BUFFER_SIZE] = 0;
+		printf("iteration: %d\n", i);
+		i++;
+		read(fd, buff, BUFFER_SIZE);
+		//buff = (char *) ft_my_realloc(buff, BUFFER_SIZE + 1, j + 1);
+		//printf("buff: %s\n", buff);
+		j += ft_strlen(buff);
+		//printf("j: %d\n", j);
+		//printf("%s\n", buff);
+		aux = (char *) ft_my_realloc(buff, BUFFER_SIZE + 1, j + 1);
+		printf("buff: %s\n", buff);
+		//memset(aux, '\0', j);
+		printf("aux %s\n", aux);
 	}
-	str = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
-	if (!buff || !str || fd < 0 || BUFFER_SIZE <= 0)
+	//ft_strlcat(aux, buff, j);
+	//printf("line: %s\n", line);
+	
+	
+	return(NULL);
+	
+	/*
+	//line = malloc((BUFFER_SIZE)* sizeof(char));
+	if (!buff || !line || fd < 0 || BUFFER_SIZE <= 0)
 	{	
-		printf("aquuiiii");
+		printf("something failed\n");
 		return (NULL);
 	}
-	j = ft_newline(buff);
-	buff += j;
-	while ((!ft_strchr(buff, '\n') || !EOF))
-	{
-                printf("str antes read: %s\n", str);
-                printf("buff antes read: %s\n", buff);
-		read(fd, buff, BUFFER_SIZE);
-		j = ft_newline(buff);
-                str = ft_strncat(str, buff, j);
-                printf("str depois read: %s\n", str);
-                printf("buff depois read: %s\n", buff);
-		//str = ft_substr(buff, 0, j);
-	}
-        return (str);
-//	return (ft_substr(buff, 0, j));
-/*
-	static char	*buff;
-	//char *str;
-	int j;
-
-	if (!buff)
-		buff = ft_calloc((BUFFER_SIZE), sizeof(char));
-	//str = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
-	if (!buff || fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	j = ft_newline(buff);
-	buff += j;
-	while ((!ft_strchr(buff, '\n') || !EOF))
+	while ((!(ft_strchr(line, '\n'))))
 	{
 		read(fd, buff, BUFFER_SIZE);
-		j = ft_newline(buff);
-		//str = ft_calloc((j + 1), sizeof(char));
-		//str = ft_strncat(str, buff, j);
-		//str = ft_substr(buff, 0, j);
-		return (ft_substr(buff, 0, j));
+		printf("%s\n", buff);
+		j = ft_strlen(buff);
+		line = (char *) ft_my_realloc(buff, BUFFER_SIZE + 1, j + 1);
+		line = ft_strncat(line, buff, BUFFER_SIZE);
 	}
-	return (NULL);*/
+	//	printf("line after: %s\n", line);
+		printf("********** FORA LOOP\n");
+		printf("\n");
+        return (line);*/
 }
