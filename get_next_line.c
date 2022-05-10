@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 22:39:38 by mcerquei          #+#    #+#             */
-/*   Updated: 2022/05/10 02:07:49 by coder            ###   ########.fr       */
+/*   Updated: 2022/05/10 05:38:03 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void *ft_my_realloc(void *ptr, size_t original_l, size_t new_l)
 	if (new_ptr)
 	{
 		printf("new_ptr\n");
-		ft_strlcat(new_ptr, ptr, new_l);
+		//ft_strlcat(new_ptr, ptr, new_l);
 		//free(ptr);
 	}
 	return (new_ptr);
@@ -96,6 +96,7 @@ char	*get_next_line(int fd)
 		//printf("j: %d\n", j);
 		//printf("%s\n", buff);
 		aux = (char *) ft_my_realloc(buff, BUFFER_SIZE + 1, j + 1);
+		line = ft_strjoin(buff, aux);
 		printf("buff: %s\n", buff);
 		//memset(aux, '\0', j);
 		printf("aux %s\n", aux);
