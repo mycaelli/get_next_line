@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 22:39:38 by mcerquei          #+#    #+#             */
-/*   Updated: 2022/05/10 05:38:03 by coder            ###   ########.fr       */
+/*   Updated: 2022/05/10 12:28:17 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void *ft_my_realloc(void *ptr, size_t original_l, size_t new_l)
 	if (new_l == 0)
 	{
 		printf("new_l == 0\n");
-		free(ptr);
+		//free(ptr);
 		return (NULL);
 	}
 	if (!ptr)
@@ -65,42 +65,77 @@ void *ft_my_realloc(void *ptr, size_t original_l, size_t new_l)
 	//free(ptr);
 	if (new_ptr)
 	{
-		printf("new_ptr\n");
-		//ft_strlcat(new_ptr, ptr, new_l);
+		//printf("new_ptr\n");
+		ft_strlcat(new_ptr, ptr, new_l);
 		//free(ptr);
 	}
 	return (new_ptr);
+}
+
+char *ft_strconcat(char *s1, char *s2)
+{
+	char *str;
+	int s1_l;
+	int s2_l;
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	s1_l = ft_strlen(s1);
+	s2_l = ft_strlen(s2);
+	str = malloc((s1_l + s2_l + 1) * sizeof(char));
+	if (!str || !s1 || !s2)
+		return (NULL);
+	while (i < s1_l)
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	while (j < s2_l)
+	{
+		str[i + j] = s2[j];
+		j++;
+	}
+	str[i + j] = '\0';
+	return (str);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*buff;
 	char *aux;
-	char *line;
+	static char *line;
 	int j;
 	
 	j = 0;
 	if (!buff)
-		buff = malloc((BUFFER_SIZE) * sizeof(char));
-	//buff[BUFFER_SIZE] = '\0';
+		buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	buff[BUFFER_SIZE] = '\0';
 
-	int i = 0;
-	while ((!(ft_strchr(buff, '\n'))) || !EOF )
-	{
+	int i = 1;
+	while ((!(ft_strchr(line, '\n'))) || !EOF )
+	{ //aux e buff
 		printf("iteration: %d\n", i);
-		i++;
 		read(fd, buff, BUFFER_SIZE);
+		line = ft_strconcat(line, buff);
+	//	aux = (char *) ft_my_realloc(line, BUFFER_SIZE, BUFFER_SIZE * i);
+		i++;
+		//line = (char *) ft_my_realloc(buff, BUFFER_SIZE, BUFFER_SIZE * i);
+		
 		//buff = (char *) ft_my_realloc(buff, BUFFER_SIZE + 1, j + 1);
 		//printf("buff: %s\n", buff);
-		j += ft_strlen(buff);
+		//j += ft_strlen(buff);
+		//buff = (char *) ft_my_realloc(buff, BUFFER_SIZE + 1, j + 1);
 		//printf("j: %d\n", j);
 		//printf("%s\n", buff);
-		aux = (char *) ft_my_realloc(buff, BUFFER_SIZE + 1, j + 1);
-		line = ft_strjoin(buff, aux);
+		//line = (char *) ft_my_realloc(buff, BUFFER_SIZE + 1, j + 1);
+		//ft_strlcat(line, buff, j + 1);
 		printf("buff: %s\n", buff);
 		//memset(aux, '\0', j);
-		printf("aux %s\n", aux);
+		printf("line %s\n", line);
 	}
+	//printf("aquii %s\n", aux);
 	//ft_strlcat(aux, buff, j);
 	//printf("line: %s\n", line);
 	
