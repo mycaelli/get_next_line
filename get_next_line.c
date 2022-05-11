@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 04:43:22 by coder             #+#    #+#             */
-/*   Updated: 2022/05/11 09:53:31 by coder            ###   ########.fr       */
+/*   Updated: 2022/05/11 10:44:25 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 
 char	*get_next_line(int fd)
 {	
-	//char		*buffer;
-	char		buffer[BUFFER_SIZE + 1];
+	char		*buffer;
+	//char		buffer[BUFFER_SIZE + 1];
 	char		*line;
 	static char	*accumulator;	
 	int			validation;
@@ -25,35 +25,34 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	validation = 1;
-	//buffer = check_buffer();
+	buffer = new_buffer();
 	while ((!ft_strchr(buffer, '\n')) && validation > 0)
 	{
 		validation = read(fd, buffer, BUFFER_SIZE);
-		if (validation <= 0)
+		if (validation == -1)
 		{
-			//free(buffer);
+			free(buffer);
 			return (NULL);
 		}
 		buffer[validation] = '\0';
 		accumulator = ft_strjoin(accumulator, buffer);
 	}
-	//free(buffer);
+	free(buffer);
 	line = get_line(accumulator);
 	accumulator = get_remainder(accumulator);
 	return (line);
 }
 
-/*
-char	*check_buffer(void)
+
+char	*new_buffer(void)
 {
 	char	*buffer;
 
-	buffer = malloc(sizeof(char *) * (BUFFER_SIZE + 1));
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
 	return (buffer);
 }
-*/
 
 char	*get_line(char *str)
 {
@@ -63,7 +62,7 @@ char	*get_line(char *str)
 
 	i = 0;
 	len = 0;
-	if (!str)
+	if (!str || str[0] == 0)
 		return (NULL);
 	while (str[len] != '\n' && str[len])
 		len++;
@@ -80,6 +79,7 @@ char	*get_line(char *str)
 	if (str[i] == '\n')
 		line[i++] = '\n';
 	line[i] = '\0';
+	free(str);
 	return (line);
 }
 
