@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 04:43:22 by coder             #+#    #+#             */
-/*   Updated: 2022/05/11 22:50:17 by coder            ###   ########.fr       */
+/*   Updated: 2022/05/12 00:29:42 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ char	*get_next_line(int fd)
 	accumulator = get_remainder(accumulator);
 	return (line);
 }
-
 
 char	*new_buffer(void)
 {
@@ -78,7 +77,6 @@ char	*get_line(char *str)
 	if (str[i] == '\n')
 		line[i++] = '\n';
 	line[i] = '\0';
-	//free(str);
 	return (line);
 }
 
@@ -87,10 +85,9 @@ char	*get_remainder(char *str)
 	char	*remainder;
 	int		i;
 	int		j;
-	
+
 	i = 0;
 	j = 0;
-
 	if (!str || !str[i])
 	{
 		free(str);

@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 19:22:46 by mcerquei          #+#    #+#             */
-/*   Updated: 2022/05/11 10:12:11 by coder            ###   ########.fr       */
+/*   Updated: 2022/05/12 00:26:39 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ char	*ft_strjoin(char *s1, char const *s2)
 	int		j;
 	char	*concat;
 
-	i = 0;
-	j = 0;
+	i = -1;
+	j = -1;
 	if (!s1)
 	{
 		s1 = (char *)malloc(1 * sizeof(char));
@@ -42,16 +42,10 @@ char	*ft_strjoin(char *s1, char const *s2)
 	concat = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!concat)
 		return (NULL);
-	while (s1[i])
-	{
+	while (s1[++i])
 		concat[i] = s1[i];
-		i++;
-	}
-	while (s2[j])
-	{
+	while (s2[++j])
 		concat[i + j] = s2[j];
-		j++;
-	}
 	concat[i + j] = '\0';
 	free(s1);
 	return (concat);
@@ -59,6 +53,8 @@ char	*ft_strjoin(char *s1, char const *s2)
 
 char	*ft_strchr(const char *s, int c)
 {
+	if (!s)
+		return (NULL);
 	while (*s)
 	{
 		if (*s == (unsigned char) c)
