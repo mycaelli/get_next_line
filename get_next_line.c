@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 04:43:22 by coder             #+#    #+#             */
-/*   Updated: 2022/05/11 10:44:25 by coder            ###   ########.fr       */
+/*   Updated: 2022/05/11 22:50:17 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 char	*get_next_line(int fd)
 {	
 	char		*buffer;
-	//char		buffer[BUFFER_SIZE + 1];
 	char		*line;
 	static char	*accumulator;	
 	int			validation;
@@ -26,7 +25,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	validation = 1;
 	buffer = new_buffer();
-	while ((!ft_strchr(buffer, '\n')) && validation > 0)
+	while ((!ft_strchr(accumulator, '\n')) && validation > 0)
 	{
 		validation = read(fd, buffer, BUFFER_SIZE);
 		if (validation == -1)
@@ -62,7 +61,7 @@ char	*get_line(char *str)
 
 	i = 0;
 	len = 0;
-	if (!str || str[0] == 0)
+	if (!str || !str[0])
 		return (NULL);
 	while (str[len] != '\n' && str[len])
 		len++;
@@ -79,7 +78,7 @@ char	*get_line(char *str)
 	if (str[i] == '\n')
 		line[i++] = '\n';
 	line[i] = '\0';
-	free(str);
+	//free(str);
 	return (line);
 }
 
@@ -91,7 +90,8 @@ char	*get_remainder(char *str)
 	
 	i = 0;
 	j = 0;
-	if (!str[i])
+
+	if (!str || !str[i])
 	{
 		free(str);
 		return (NULL);
