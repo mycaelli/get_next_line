@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mcerquei <mcerquei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 04:43:22 by coder             #+#    #+#             */
-/*   Updated: 2022/05/12 00:29:42 by coder            ###   ########.fr       */
+/*   Updated: 2022/05/13 02:46:00 by mcerquei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-#include <stdio.h>
 
 char	*get_next_line(int fd)
 {	

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcerquei <mcerquei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/12 06:12:16 by mcerquei          #+#    #+#             */
-/*   Updated: 2022/05/12 07:24:54 by mcerquei         ###   ########.fr       */
+/*   Created: 2022/05/04 19:22:46 by mcerquei          #+#    #+#             */
+/*   Updated: 2022/05/13 02:45:54 by mcerquei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,3 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *) s);
 	return (NULL);
 }
-
-void	ft_delnode(t_lst *lst, t_lst *node, int fd)
-{
-	t_lst	*node_del;
-
-	if (!node || !lst)
-		return ;
-	// no que quero deletar
-	node_del = ft_iterfd(node, fd);
-	node_del->prev->next = node_del->next;
-	node_del->next->prev = node_del->prev;
-	free(node_del);
-}
-

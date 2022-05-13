@@ -1,55 +1,53 @@
-/*
-
-// struct
-	fd
-	conteudo
-	ptr prox
-
-// cria um no
-// adc conteudo no no
-// deleta conteudo e no -> se erro
-// itera os nos 
-*/
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mcerquei <mcerquei@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/11 04:43:22 by coder             #+#    #+#             */
+/*   Updated: 2022/05/13 02:45:21 by mcerquei         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
 char	*get_next_line(int fd)
-{
-	char			*buffer;
-	char			*line;
-	int 			validation;
-	t_lst			*node;
-	static	t_lst	*lst;
+{	
+	char		*buffer;
+	char		*line;
+	static char	*accumulator[257];	
+	int			validation;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > 256)
 		return (NULL);
-	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buffer)
-		return (NULL);
-	node = ft_iterfd(lst, fd);
-	if (!node)
-		node = ft_add_new_node(lst, fd);
-	if (!lst)
-		lst = node;
 	validation = 1;
-	while ((!ft_strchr(node->accumulator, '\n')) && validation > 0)
+	buffer = new_buffer();
+	while ((!ft_strchr(accumulator[fd], '\n')) && validation > 0)
 	{
 		validation = read(fd, buffer, BUFFER_SIZE);
-		// cheguei no fim do arquivo
-			// mas sera que acabou tudo que tinha pra ler ????
-		if (validation <= 0)
+		if (validation == -1)
 		{
-			ft_delnode(lst, node, fd);
-			//free(buffer);
+			free(buffer);
 			return (NULL);
 		}
 		buffer[validation] = '\0';
-		node->accumulator = get_remainder(node->accumulator);
+		accumulator[fd] = ft_strjoin(accumulator[fd], buffer);
 	}
 	free(buffer);
-	line = get_line(buffer);
-	node->accumulator = get_remainder(node->accumulator);
+	line = get_line(accumulator[fd]);
+	accumulator[fd] = get_remainder(accumulator[fd]);
 	return (line);
+}
+
+char	*new_buffer(void)
+{
+	char	*buffer;
+
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buffer)
+		return (NULL);
+	return (buffer);
 }
 
 char	*get_line(char *str)
@@ -105,41 +103,4 @@ char	*get_remainder(char *str)
 	remainder[j] = '\0';
 	free(str);
 	return (remainder);
-}
-
-// funcao que itera a lista procurando por um fd
-	// se nao encontrar cria um novo no
-	// se encontrar retorna o no buscado
-
-t_lst	*ft_add_new_node(t_lst *lst, int fd)
-{
-	t_lst	*new_node;
-
-	new_node = (t_lst *)malloc(1 * sizeof(t_lst));
-	if (!new_node)
-		return (NULL);
-	*(new_node->accumulator) = '\0';
-	new_node->fd = fd;
-	new_node->next = NULL;
-	new_node->prev = NULL;
-	/* inicializa lst */
-	// acha o fim da lista
-	while (lst->next)
-		lst = lst->next;
-	// prev eh o ultimo elemento
-	new_node->prev = lst;
-	// next eh o no adicionado
-	lst->next = new_node;
-	return (new_node);
-}
-
-t_lst	*ft_iterfd(t_lst *lst, int fd)
-{
-	while (lst)
-	{
-		if (lst->fd == fd)
-			return (lst);
-		lst = lst->next;
-	}
-	return (NULL);
 }
